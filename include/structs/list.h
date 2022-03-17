@@ -11,7 +11,7 @@ list_t *list_insert(list_t *l, void *value);
 
 list_t *list_remove(list_t *l);
 
-list_t * list_append(list_t *l, void *value);
+list_t *list_append(list_t *l, void *value);
 
 list_t *list_get(void *value, list_t *l, int (*compare_values)(void *v1, void *v2));
 

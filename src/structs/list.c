@@ -164,7 +164,7 @@ void list_clear(list_t *l)
     }
     list_t *t = l;
     size_t i = list_length(l);
-    while (t->next!=NULL)
+    while (t->next != NULL)
     {
         l = t->next;
         free(t);

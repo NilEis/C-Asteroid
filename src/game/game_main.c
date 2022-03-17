@@ -39,13 +39,24 @@ void game_tick()
     int i = list_length(l);
     player_tick(width, height);
     list_t *x = l;
-    while (i-- && x != NULL)
+    int test = 0;
+    while (i-- && (x != NULL))
     {
-        printf("%p\n", x);
-        asteroid_tick((asteroid_t *)list_get_value(x), width, height, l);
-        x = list_get_next(x);
+        if (x == l)
+        {
+            test = 1;
+        }
+        x = asteroid_tick((asteroid_t *)list_get_value(x), width, height, l);
+        if (x != NULL)
+        {
+            x = list_get_next(x);
+            test = 0;
+        }
+        else if (test == 1)
+        {
+            l = NULL;
+        }
     }
-    printf("%p\n---------------\n", l);
 }
 
 static void cleanup(void)

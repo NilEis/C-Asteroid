@@ -26,7 +26,9 @@ void asteroid_draw(asteroid_t *t, int width, int height);
 
 void asteroid_update(asteroid_t *t);
 
-void asteroid_tick(void *t, int width, int height, list_t *l);
+list_t *asteroid_break(asteroid_t *a, list_t *l);
+
+list_t *asteroid_tick(void *t, int width, int height, list_t *l);
 
 void asteroid_free(void *t);
 
