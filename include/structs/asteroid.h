@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include "raylib.h"
-#include "structs/list.h"
 
 typedef struct asteroid asteroid_t;
 
@@ -26,10 +25,12 @@ void asteroid_draw(asteroid_t *t, int width, int height);
 
 void asteroid_update(asteroid_t *t);
 
-list_t *asteroid_break(asteroid_t *a, list_t *l);
+void asteroid_break(asteroid_t *a, asteroid_t **arr, int index, int size);
 
-list_t *asteroid_tick(void *t, int width, int height, list_t *l);
+int asteroid_add(asteroid_t *a, asteroid_t **arr, int size);
 
-void asteroid_free(void *t);
+void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, int size);
+
+void asteroid_free(asteroid_t *t);
 
 #endif // ASTEROID_H

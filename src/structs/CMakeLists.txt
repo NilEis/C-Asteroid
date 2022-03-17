@@ -18,6 +18,6 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
-add_library(${PROJECT_NAME} list.c asteroid.c player.c)
+add_library(${PROJECT_NAME} list.c asteroid.c player.c bullet.c)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include/ ${raylib_SOURCE_DIR} ${raylib_BINARY_DIR})
 target_link_libraries(${PROJECT_NAME} raylib)

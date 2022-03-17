@@ -7,10 +7,6 @@ static uint16_t c_id = 0;
 asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size)
 {
     asteroid_t *t = (asteroid_t *)malloc(sizeof(asteroid_t));
-    if (t == NULL)
-    {
-        return NULL;
-    }
     t->x = x % 1000;
     t->y = y % 1000;
     t->vx = 1 + ((rand() % 100) - 50) / 10;
@@ -61,42 +57,47 @@ void asteroid_update(asteroid_t *t)
     t->y = (t->y < 0) * (1000) + (t->y >= 0) * (t->y % 1000);
 }
 
-list_t *asteroid_break(asteroid_t *a, list_t *l)
+void asteroid_break(asteroid_t *a, asteroid_t **arr, int index, int size)
 {
-    list_t *la = list_get((void *)a, l, asteroid_compare);
-    list_t *ret = NULL;
-    if (la == NULL)
-    {
-        return;
-    }
     double r = a->r;
     uint16_t x = a->x;
     uint16_t y = a->y;
     asteroid_free(a);
-    list_set_value(la, NULL);
-    if (r <= 3.0)
+    if (r <= 8.0)
     {
-        ret = list_remove(la);
+        arr[index] = NULL;
     }
     else
     {
-        ret = list_set_value(la, asteroid_new(x, y, r / 2));
-        list_insert(la, asteroid_new(x, y, r / 2));
+        arr[index] = asteroid_new(x, y, r / 2);
+        asteroid_add(asteroid_new(x, y, r / 2), arr, size);
     }
-    return ret;
 }
 
-list_t *asteroid_tick(void *t, int width, int height, list_t *l)
+int asteroid_add(asteroid_t *a, asteroid_t **arr, int size)
 {
-    list_t *ret = l;
-    ret = asteroid_break((asteroid_t *)t, l);
-    asteroid_draw((asteroid_t *)t, width, height);
-    asteroid_update((asteroid_t *)t);
-    return ret;
+    int i = 0;
+    while (arr[i] != NULL && i < size)
+    {
+        i++;
+    }
+    if (i < size)
+    {
+        arr[i] = a;
+        return 0;
+    }
+    return 1;
 }
 
-inline void asteroid_free(void *t)
+void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, int size)
+{
+	asteroid_t* a = (asteroid_t*)t;
+    asteroid_draw(a, width, height);
+	a = arr[index];
+    asteroid_update(a);
+}
+
+inline void asteroid_free(asteroid_t *t)
 {
     free(t);
-    t = NULL;
 }

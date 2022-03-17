@@ -5,9 +5,15 @@ void player_init();
 
 void player_draw(int width, int height);
 
-void player_update();
+int player_update();
 
-void player_tick(int width, int height);
+int player_tick(int width, int height);
+
+int player_get_x();
+
+int player_get_y();
+
+float player_get_a();
 
 
 #endif // PLAYER_H

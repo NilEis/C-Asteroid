@@ -5,14 +5,15 @@
 
 #define conv(x, s) (((double)(x) / 1000.0) * ((double)s))
 
+#define PLAYER_SIZE 4.0
+#define MAX_V2 (MAX_V * MAX_V)
+#define MAX_V 15.0
+
 int x = 0;
 int y = 0;
 double va = 1.1;
 double vx = 0;
 double vy = 0;
-
-const static double MAX_V = 15.0;
-const static double MAX_V2 = 225;
 
 void player_init()
 {
@@ -30,10 +31,9 @@ void player_draw(int width, int height)
     double n_x = 1;
     double n_y = -(cos(va) / sin(va));
     const double v_l = sqrt(1 + n_y * n_y);
-    const static double p_s = 5.0;
-    const static double p_length = 25;
-    const static double p_width = 10;
-    const static double p_tail = 12.5;
+    const static double p_length = 5.0 * PLAYER_SIZE;
+    const static double p_width = 2.25 * PLAYER_SIZE;
+    const static double p_tail = 2.5 * PLAYER_SIZE;
     n_x /= v_l;
     n_y /= v_l;
     DrawLine(conv(x + vd_x * p_length, width), conv(y + vd_y * p_length, height), conv(-vd_x * p_tail + x + n_x * p_width, width), conv(-vd_y * p_tail + y + n_y * p_width, height), WHITE);
@@ -42,7 +42,7 @@ void player_draw(int width, int height)
     DrawLine(conv(-vd_x * p_tail + x - n_x * p_width, width), conv(-vd_y * p_tail + y - n_y * p_width, height), conv(x + vd_x * p_length, width), conv(y + vd_y * p_length, height), WHITE);
 }
 
-void player_update()
+int player_update()
 {
     x += vx;
     y += vy;
@@ -71,10 +71,28 @@ void player_update()
             vy *= MAX_V;
         }
     }
+    if (IsKeyDown(KEY_SPACE))
+    {
+        return 1;
+    }
+    return 0;
 }
 
-void player_tick(int width, int height)
+int player_tick(int width, int height)
 {
     player_draw(width, height);
-    player_update();
+    return player_update();
+}
+
+int player_get_x()
+{
+    return x;
+}
+int player_get_y()
+{
+    return y;
+}
+float player_get_a()
+{
+    return va;
 }

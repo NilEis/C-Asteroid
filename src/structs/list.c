@@ -29,8 +29,8 @@ list_t *list_insert(list_t *l, void *value)
     if (l->next != NULL)
     {
         l->next->prev = ret;
+        ret->next = l->next;
     }
-    ret->next = l->next;
     l->next = ret;
     return l;
 }
@@ -80,7 +80,7 @@ list_t *list_append(list_t *l, void *value)
     {
         t = t->next;
     }
-    t->next = list_new(value, t->prev);
+    t->next = list_new(value, t);
     return l;
 }
 
