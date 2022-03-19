@@ -6,18 +6,22 @@
 #include "video/shader.h"
 #include "game/game_main.h"
 
-#define WIDTH 600
-#define HEIGHT 400
-
 RenderTexture2D target;
 Shader m_s;
 static void cleanup(void);
 int main(int argc, char const *argv[])
 {
 	int cursor = 1;
+	int width = 600;
+	int height = 400;
+	if(argc==3)
+	{
+		sscanf(argv[1],"%d",&width);
+		sscanf(argv[2],"%d",&height);
+	}
 	atexit(cleanup);
-	video_init(WIDTH, HEIGHT, "Asteroid");
-	target = LoadRenderTexture(WIDTH, HEIGHT);
+	video_init(width, height, "Asteroid");
+	target = LoadRenderTexture(width, height);
 	m_s = LoadShaderFromMemory(basic_shader_vs, basic_shader_fs);
 	game_init();
 	while (!WindowShouldClose())
