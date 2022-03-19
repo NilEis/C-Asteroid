@@ -9,6 +9,8 @@
 #define MAX_V2 (MAX_V * MAX_V)
 #define MAX_V 15.0
 
+static int draw_hitbox = 0;
+
 int x = 0;
 int y = 0;
 double va = 1.1;
@@ -40,6 +42,10 @@ void player_draw(int width, int height)
     DrawLine(conv(-vd_x * p_tail + x + n_x * p_width, width), conv(-vd_y * p_tail + y + n_y * p_width, height), conv(x, width), conv(y, height), WHITE);
     DrawLine(conv(x, width), conv(y, height), conv(-vd_x * p_tail + x - n_x * p_width, width), conv(-vd_y * p_tail + y - n_y * p_width, height), WHITE);
     DrawLine(conv(-vd_x * p_tail + x - n_x * p_width, width), conv(-vd_y * p_tail + y - n_y * p_width, height), conv(x + vd_x * p_length, width), conv(y + vd_y * p_length, height), WHITE);
+    if (draw_hitbox)
+    {
+        DrawCircleLines(conv(x, width), conv(y, height), conv(p_length, width), RED);
+    }
 }
 
 int player_update()
@@ -95,4 +101,9 @@ int player_get_y()
 float player_get_a()
 {
     return va;
+}
+
+void player_switch_hitbox(void)
+{
+    draw_hitbox = !draw_hitbox;
 }

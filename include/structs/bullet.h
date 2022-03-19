@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "structs/asteroid.h"
+
 typedef struct bullet bullet_t;
 
 struct bullet
@@ -20,8 +22,14 @@ void bullet_update(bullet_t *b);
 
 void bullet_draw(bullet_t *b, int width, int height);
 
-void bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size);
+int bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size);
+
+int bullet_collide(asteroid_t *a, bullet_t *b);
 
 int bullet_add(bullet_t *a, bullet_t **arr, int size);
+
+void bullet_free(bullet_t *t);
+
+void bullet_switch_hitbox(void);
 
 #endif // BULLET_H

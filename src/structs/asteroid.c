@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 
+#define conv(x, s) (((double)(x) / 1000.0) * ((double)s))
+
 static uint16_t c_id = 0;
+
+static int draw_hitbox = 0;
 
 asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size)
 {
@@ -14,11 +18,14 @@ asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size)
     t->id = c_id++;
     float a = rand() % 360;
     double r = 0;
-    double max_r = -1;
+    double max_r = 1;
     for (int i = 0; i < 15; i++)
     {
         r = (double)((rand() % (size / 2)) + size);
-        max_r = (max_r <= r) * max_r + (r > max_r) * r;
+        if (r > max_r)
+        {
+            max_r = r;
+        }
         t->verticies[i].x = cosf(DEG2RAD * (360 - a)) * r;
         t->verticies[i].y = sinf(DEG2RAD * (360 - a)) * r;
         a += 24;
@@ -43,6 +50,17 @@ void asteroid_draw(asteroid_t *t, int width, int height)
         DrawLine(((float)(t->x + t->verticies[i - 1].x) / 1000.0) * width, ((float)(t->y + t->verticies[i - 1].y) / 1000.0) * height, ((float)(t->x + t->verticies[i].x) / 1000.0) * width, ((float)(t->y + t->verticies[i].y) / 1000.0) * height, WHITE);
     }
     DrawLine(((float)(t->x + t->verticies[14].x) / 1000.0) * width, ((float)(t->y + t->verticies[14].y) / 1000.0) * height, ((float)(t->x + t->verticies[0].x) / 1000.0) * width, ((float)(t->y + t->verticies[0].y) / 1000.0) * height, WHITE);
+    if (draw_hitbox)
+    {
+        DrawCircleLines(conv(t->x, width), conv(t->y, height), conv(t->r, width), RED);
+    }
+}
+
+int asteroid_hit(asteroid_t *a, int x, int y)
+{
+    int distX = a->x - x;
+    int distY = a->y - y;
+    return (distX * distX + distY * distY) <= a->r;
 }
 
 void asteroid_update(asteroid_t *t)
@@ -63,7 +81,8 @@ void asteroid_break(asteroid_t *a, asteroid_t **arr, int index, int size)
     uint16_t x = a->x;
     uint16_t y = a->y;
     asteroid_free(a);
-    if (r <= 8.0)
+
+    if (r / 2.0 <= 16.0)
     {
         arr[index] = NULL;
     }
@@ -91,13 +110,18 @@ int asteroid_add(asteroid_t *a, asteroid_t **arr, int size)
 
 void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, int size)
 {
-	asteroid_t* a = (asteroid_t*)t;
+    asteroid_t *a = (asteroid_t *)t;
     asteroid_draw(a, width, height);
-	a = arr[index];
+    a = arr[index];
     asteroid_update(a);
 }
 
 inline void asteroid_free(asteroid_t *t)
 {
     free(t);
+}
+
+void asteroid_switch_hitbox(void)
+{
+    draw_hitbox = !draw_hitbox;
 }

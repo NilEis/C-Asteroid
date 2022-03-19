@@ -15,5 +15,7 @@ int player_get_y();
 
 float player_get_a();
 
+void player_switch_hitbox(void);
+
 
 #endif // PLAYER_H
