@@ -62,7 +62,7 @@ static void game_start(void)
     {
         game_active = game_run;
     }
-    DrawText("PRESS SPACE TO START", 25, height / 2, 25, WHITE);
+    DrawText("PRESS SPACE TO START", 25, height / 2, height / 10, WHITE);
 }
 
 static void game_run(void)
@@ -127,6 +127,7 @@ static void game_run(void)
 
 static void game_end(void)
 {
+    DrawText("PRESS ESC TO EXIT", 25, height / 2, height / 10, WHITE);
 }
 
 static void cleanup(void)
