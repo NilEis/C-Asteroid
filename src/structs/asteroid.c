@@ -1,4 +1,5 @@
 #include "structs/asteroid.h"
+#include "game/functions.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -13,8 +14,9 @@ asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size)
     asteroid_t *t = (asteroid_t *)malloc(sizeof(asteroid_t));
     t->x = x % 1000;
     t->y = y % 1000;
-    t->vx = 1 + ((rand() % 100) - 50) / 10;
-    t->vy = 1 + ((rand() % 100) - 50) / 10;
+    int va = rand() % 360;
+    t->vx = 40 * cos(va);
+    t->vy = 40 * sin(va);
     t->id = c_id++;
     float a = rand() % 360;
     double r = 0;
@@ -56,21 +58,22 @@ void asteroid_draw(asteroid_t *t, int width, int height)
     }
 }
 
-int asteroid_hit(asteroid_t *a, int x, int y)
+int asteroid_hit(asteroid_t *a, int x, int y, int r)
 {
     int distX = a->x - x;
     int distY = a->y - y;
-    return (distX * distX + distY * distY) <= a->r;
+    int distR = a->r + r;
+    return (distX * distX + distY * distY) <= (distR * distR);
 }
 
-void asteroid_update(asteroid_t *t)
+void asteroid_update(asteroid_t *t, double time)
 {
     if (t == NULL)
     {
         return;
     }
-    t->x += t->vx;
-    t->y += t->vy;
+    t->x = lerp_precise(t->x, t->x + t->vx, time);
+    t->y = lerp_precise(t->y, t->y + t->vy, time);
     t->x = (t->x < 0) * (1000) + (t->x >= 0) * (t->x % 1000);
     t->y = (t->y < 0) * (1000) + (t->y >= 0) * (t->y % 1000);
 }
@@ -108,12 +111,12 @@ int asteroid_add(asteroid_t *a, asteroid_t **arr, int size)
     return 1;
 }
 
-void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, int size)
+void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, int size, double time)
 {
     asteroid_t *a = (asteroid_t *)t;
     asteroid_draw(a, width, height);
     a = arr[index];
-    asteroid_update(a);
+    asteroid_update(a, time);
 }
 
 inline void asteroid_free(asteroid_t *t)

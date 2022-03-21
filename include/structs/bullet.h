@@ -18,11 +18,11 @@ struct bullet
 
 bullet_t *bullet_new(int16_t x, int16_t y, float a);
 
-void bullet_update(bullet_t *b);
+void bullet_update(bullet_t *b, double time);
 
 void bullet_draw(bullet_t *b, int width, int height);
 
-int bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size);
+int bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size, double time);
 
 int bullet_collide(asteroid_t *a, bullet_t *b);
 

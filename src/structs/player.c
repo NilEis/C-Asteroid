@@ -1,4 +1,5 @@
 #include "structs/player.h"
+#include "game/functions.h"
 #include <math.h>
 #include "raylib.h"
 #include "rlgl.h"
@@ -7,7 +8,7 @@
 
 #define PLAYER_SIZE 4.0
 #define MAX_V2 (MAX_V * MAX_V)
-#define MAX_V 15.0
+#define MAX_V 55.0
 
 static int draw_hitbox = 0;
 
@@ -48,24 +49,24 @@ void player_draw(int width, int height)
     }
 }
 
-int player_update()
+int player_update(double time)
 {
-    x += vx;
-    y += vy;
+    x = lerp_precise(x, x + vx, time);
+    y = lerp_precise(y, y + vy, time);
     x = (x < 0) * 1000 + (x >= 0) * (x % 1000);
     y = (y < 0) * 1000 + (y >= 0) * (y % 1000);
     if (IsKeyDown(KEY_A))
     {
-        va -= 0.075;
+        va -= 0.125;
     }
     else if (IsKeyDown(KEY_D))
     {
-        va += 0.075;
+        va += 0.125;
     }
     else if (IsKeyDown(KEY_W))
     {
-        vx += cos(va) / 3.5;
-        vy += sin(va) / 3.5;
+        vx += cos(va) * 2.5;
+        vy += sin(va) * 2.5;
         double vx2 = vx * vx;
         double vy2 = vy * vy;
         if (vx2 + vy2 >= MAX_V2)
@@ -84,10 +85,10 @@ int player_update()
     return 0;
 }
 
-int player_tick(int width, int height)
+int player_tick(int width, int height, double time)
 {
     player_draw(width, height);
-    return player_update();
+    return player_update(time);
 }
 
 int player_get_x()
@@ -101,6 +102,11 @@ int player_get_y()
 float player_get_a()
 {
     return va;
+}
+
+int player_get_size()
+{
+    return 5.0 * PLAYER_SIZE;
 }
 
 void player_switch_hitbox(void)

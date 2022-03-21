@@ -16,9 +16,9 @@ void particle_init();
 
 int particle_add(int x, int y, double a, int i);
 
-void particle_tick(int width, int height);
+void particle_tick(int width, int height, double time);
 
-int particle_update(particle_t *p);
+int particle_update(particle_t *p, double time);
 
 void particle_draw(particle_t *p, int width, int height);
 

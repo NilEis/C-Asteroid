@@ -1,11 +1,12 @@
 #include "structs/bullet.h"
+#include "game/functions.h"
 #include <math.h>
 #include <stdlib.h>
 #include "raylib.h"
 
 #define conv(x, s) (((double)(x) / 1000.0) * ((double)s))
 
-#define V 15
+#define V 65
 
 #define R 1.25
 
@@ -30,11 +31,11 @@ bullet_t *bullet_new(int16_t x, int16_t y, float a)
     return NULL;
 }
 
-void bullet_update(bullet_t *b)
+void bullet_update(bullet_t *b, double time)
 {
-    b->x += b->vx;
+    b->x = lerp_precise(b->x, b->x + b->vx, time);
     b->x = (b->x < 0) * (1000) + (b->x >= 0) * (b->x % 1000);
-    b->y += b->vy;
+    b->y = lerp_precise(b->y, b->y + b->vy, time);
     b->y = (b->y < 0) * (1000) + (b->y >= 0) * (b->y % 1000);
     b->i += 1;
 }
@@ -48,10 +49,10 @@ void bullet_draw(bullet_t *b, int width, int height)
     }
 }
 
-int bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size)
+int bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size, double time)
 {
     bullet_draw(b, width, height);
-    bullet_update(b);
+    bullet_update(b, time);
     return b->i >= 50;
 }
 

@@ -7,6 +7,7 @@
 #include "structs/bullet.h"
 #include "structs/player.h"
 #include "structs/particle.h"
+#include <stdio.h>
 
 static int monitor = 0;
 static int width = 0;
@@ -17,6 +18,8 @@ static bullet_t *bullets[64] = {NULL};
 static const int bullets_size = sizeof(bullets) / sizeof(bullet_t *);
 
 static void (*game_active)(void) = NULL;
+
+static double last_time = 0;
 
 static void cleanup(void);
 static void game_start(void);
@@ -43,6 +46,7 @@ void game_init()
         asteroids[i] = asteroid_new(x, y, 25);
     }
     game_active = game_start;
+    last_time = GetTime();
 }
 
 void game_tick()
@@ -62,11 +66,12 @@ static void game_start(void)
     {
         game_active = game_run;
     }
-    DrawText("PRESS SPACE TO START", 25, height / 2, height / 10, WHITE);
+    DrawText("PRESS SPACE TO START", 25, height / 2, height / 25, WHITE);
 }
 
 static void game_run(void)
 {
+    double frame_time = 1.0 - pow(0.001, GetTime() - last_time);
     monitor = GetCurrentMonitor();
     width = GetScreenWidth();
     height = GetScreenHeight();
@@ -76,7 +81,7 @@ static void game_run(void)
         bullet_switch_hitbox();
         player_switch_hitbox();
     }
-    if (player_tick(width, height) == 1)
+    if (player_tick(width, height,frame_time) == 1)
     {
         bullet_add(bullet_new(player_get_x(), player_get_y(), player_get_a()), bullets, bullets_size);
     }
@@ -84,7 +89,7 @@ static void game_run(void)
     {
         if (bullets[i] != NULL)
         {
-            if (bullet_tick(bullets[i], width, height, bullets, i, bullets_size))
+            if (bullet_tick(bullets[i], width, height, bullets, i, bullets_size, frame_time))
             {
                 bullet_free(bullets[i]);
                 bullets[i] = NULL;
@@ -96,8 +101,8 @@ static void game_run(void)
         int colllide = 0;
         if (asteroids[i] != NULL)
         {
-            asteroid_tick(asteroids[i], width, height, asteroids, i, asteroids_size);
-            if (asteroid_hit(asteroids[i], player_get_x(), player_get_y()))
+            asteroid_tick(asteroids[i], width, height, asteroids, i, asteroids_size, frame_time);
+            if (asteroid_hit(asteroids[i], player_get_x(), player_get_y(), player_get_size()))
             {
                 game_active = game_end;
             }
@@ -110,7 +115,7 @@ static void game_run(void)
                         int num_p = rand() % 128;
                         for (int k = 0; k < num_p; k++)
                         {
-                            particle_add(bullets[j]->x, bullets[j]->y, rand() % 360, 35 + rand() % 20);
+                            particle_add(bullets[j]->x, bullets[j]->y, rand() % 360, 25 + rand() % 20);
                         }
                         colllide = 1;
                         bullet_free(bullets[j]);
@@ -122,12 +127,14 @@ static void game_run(void)
             }
         }
     }
-    particle_tick(width, height);
+    particle_tick(width, height, frame_time);
+    last_time = GetTime();
 }
 
 static void game_end(void)
 {
-    DrawText("PRESS ESC TO EXIT", 25, height / 2, height / 10, WHITE);
+    game_init();
+    DrawText("PRESS ESC TO EXIT", 25, height / 2, height / 25, WHITE);
 }
 
 static void cleanup(void)

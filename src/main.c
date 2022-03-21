@@ -14,10 +14,10 @@ int main(int argc, char const *argv[])
 	int cursor = 1;
 	int width = 600;
 	int height = 400;
-	if(argc==3)
+	if (argc == 3)
 	{
-		sscanf(argv[1],"%d",&width);
-		sscanf(argv[2],"%d",&height);
+		sscanf(argv[1], "%d", &width);
+		sscanf(argv[2], "%d", &height);
 	}
 	atexit(cleanup);
 	video_init(width, height, "Asteroid");
@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
 		}
 		BeginTextureMode(target);
 		{
-			ClearBackground(BLACK); 
+			ClearBackground(BLACK);
 			game_tick();
 		}
 		EndTextureMode();
@@ -48,6 +48,7 @@ int main(int argc, char const *argv[])
 			BeginShaderMode(m_s);
 			{
 				DrawTextureRec(target.texture, (Rectangle){0, 0, (float)target.texture.width, (float)-target.texture.height}, (Vector2){0, 0}, WHITE);
+				DrawFPS(10, 10);
 			}
 			EndShaderMode();
 		}

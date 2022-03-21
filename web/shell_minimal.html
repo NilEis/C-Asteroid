@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Asteroid</title>
+  <style>
+    body {
+      display: -webkit-flexbox;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin: 0px;
+    }
+
+    #canvas {
+      margin: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+  <script type='text/javascript'>
+    var Module = {
+      preRun: [],
+      postRun: [],
+      arguments: [],
+      canvas: (function () {
+        var canvas = document.getElementById('canvas');
+        // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+        // application robust, you may want to override this behavior before shipping!
+        // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+        canvas.addEventListener("webglcontextlost", function (e) {
+          alert('WebGL context lost. You will need to reload the page.');
+          e.preventDefault();
+        }, false);
+
+        return canvas;
+      })()
+    };
+    const size = Math.floor(window.innerWidth / 2.5);
+    Module.arguments.push(size.toString(10));
+    Module.arguments.push(size.toString(10));
+    document.body.style.paddingTop = ((window.innerWidth - size) / 2) + "px;";
+  </script>
+  {{{ SCRIPT }}}
+</body>
+
+</html>

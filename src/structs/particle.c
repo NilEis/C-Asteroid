@@ -1,4 +1,5 @@
 #include "structs/particle.h"
+#include "game/functions.h"
 #include <stdlib.h>
 #include <math.h>
 #include "raylib.h"
@@ -23,8 +24,8 @@ int particle_add(int x, int y, double a, int i)
     particle_t *p = (particle_t *)malloc(sizeof(particle_t));
     p->x = x;
     p->y = y;
-    p->vx = cos(a) * 5.0;
-    p->vy = sin(a) * 5.0;
+    p->vx = cos(a) * 70.0;
+    p->vy = sin(a) * 70.0;
     p->i = i;
     int j = 0;
     while (particles[j] != NULL && j < particles_size)
@@ -35,13 +36,13 @@ int particle_add(int x, int y, double a, int i)
     num_particles++;
 }
 
-void particle_tick(int width, int height)
+void particle_tick(int width, int height, double time)
 {
     for (int i = 0; i < particles_size && num_particles > 0; i++)
     {
         if (particles[i] != NULL)
         {
-            if (particle_update(particles[i]) == 1)
+            if (particle_update(particles[i], time) == 1)
             {
                 particle_free(particles[i]);
                 particles[i] = NULL;
@@ -54,10 +55,10 @@ void particle_tick(int width, int height)
     }
 }
 
-int particle_update(particle_t *p)
+int particle_update(particle_t *p, double time)
 {
-    p->x += p->vx;
-    p->y += p->vy;
+    p->x = lerp_precise(p->x, p->x + p->vx, time);
+    p->y = lerp_precise(p->y, p->y + p->vy, time);
     p->i--;
     if (p->i <= 0 || p->x < 0 || p->x >= 1000 || p->y < 0 || p->y >= 1000)
     {
@@ -69,7 +70,7 @@ int particle_update(particle_t *p)
 void particle_draw(particle_t *p, int width, int height)
 {
     DrawPixel(conv(p->x, width), conv(p->y, height), RAYWHITE);
-    //DrawCircle(conv(p->x, width), conv(p->y, height), 2, RAYWHITE);
+    // DrawCircle(conv(p->x, width), conv(p->y, height), 2, RAYWHITE);
 }
 
 inline void particle_free(particle_t *p)
