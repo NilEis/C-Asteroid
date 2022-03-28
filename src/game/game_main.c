@@ -51,17 +51,20 @@ void game_init()
 
 void game_tick()
 {
+    monitor = GetCurrentMonitor();
     if (IsKeyPressed(KEY_F))
     {
-        ToggleFullscreen();
+        SetWindowSize(GetMonitorWidth(monitor), GetMonitorHeight(monitor));
+        SetWindowState(FLAG_WINDOW_UNDECORATED);
+        SetWindowPosition(0, 0);
     }
     game_active();
 }
 
 static void game_start(void)
 {
-    width = GetScreenWidth();
-    height = GetScreenHeight();
+    width = 600;
+    height = 400;
     if (IsKeyPressed(KEY_SPACE))
     {
         game_active = game_run;
@@ -73,15 +76,15 @@ static void game_run(void)
 {
     double frame_time = 1.0 - pow(0.001, GetTime() - last_time);
     monitor = GetCurrentMonitor();
-    width = GetScreenWidth();
-    height = GetScreenHeight();
+    width = 600;
+    height = 400;
     if (IsKeyPressed(KEY_H))
     {
         asteroid_switch_hitbox();
         bullet_switch_hitbox();
         player_switch_hitbox();
     }
-    if (player_tick(width, height,frame_time) == 1)
+    if (player_tick(width, height, frame_time) == 1)
     {
         bullet_add(bullet_new(player_get_x(), player_get_y(), player_get_a()), bullets, bullets_size);
     }
