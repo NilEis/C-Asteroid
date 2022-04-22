@@ -13,6 +13,8 @@ int player_get_x();
 
 int player_get_y();
 
+double player_get_v(void);
+
 float player_get_a();
 
 int player_get_size();

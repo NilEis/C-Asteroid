@@ -1,6 +1,7 @@
 #include "structs/player.h"
 #include "game/functions.h"
 #include <math.h>
+#include <float.h>
 #include "raylib.h"
 #include "rlgl.h"
 
@@ -8,7 +9,7 @@
 
 #define PLAYER_SIZE 4.0
 #define MAX_V2 (MAX_V * MAX_V)
-#define MAX_V 55.0
+#define MAX_V 65.0
 
 static int draw_hitbox = 0;
 
@@ -32,7 +33,8 @@ void player_draw(int width, int height)
     double vd_x = cos(va) * 1.2;
     double vd_y = sin(va) * 1.2;
     double n_x = 1;
-    double n_y = -(cos(va) / sin(va));
+    double sin_va = sin(va);
+    double n_y = -(cos(va) / (sin_va == 0 ? DBL_MIN : sin_va));
     const double v_l = sqrt(1 + n_y * n_y);
     const static double p_length = 5.0 * PLAYER_SIZE;
     const static double p_width = 2.25 * PLAYER_SIZE;
@@ -47,6 +49,11 @@ void player_draw(int width, int height)
     {
         DrawCircleLines(conv(x, width), conv(y, height), conv(p_length, width), RED);
     }
+}
+
+double player_get_v(void)
+{
+    return sqrt(vx * vx + vy * vy);
 }
 
 int player_update(double time)

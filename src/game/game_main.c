@@ -12,6 +12,7 @@
 static int monitor = 0;
 static int width = 0;
 static int height = 0;
+static uint8_t invincible = 0;
 static asteroid_t *asteroids[512] = {NULL};
 static const int asteroids_size = sizeof(asteroids) / sizeof(asteroid_t *);
 static bullet_t *bullets[64] = {NULL};
@@ -84,9 +85,13 @@ static void game_run(void)
         bullet_switch_hitbox();
         player_switch_hitbox();
     }
+    if (IsKeyPressed(KEY_I))
+    {
+        invincible = !invincible;
+    }
     if (player_tick(width, height, frame_time) == 1)
     {
-        bullet_add(bullet_new(player_get_x(), player_get_y(), player_get_a()), bullets, bullets_size);
+        bullet_add(bullet_new(player_get_x(), player_get_y(), player_get_a(), player_get_v()), bullets, bullets_size);
     }
     for (int i = 0; i < bullets_size; i++)
     {
@@ -105,7 +110,7 @@ static void game_run(void)
         if (asteroids[i] != NULL)
         {
             asteroid_tick(asteroids[i], width, height, asteroids, i, asteroids_size, frame_time);
-            if (asteroid_hit(asteroids[i], player_get_x(), player_get_y(), player_get_size()))
+            if (!invincible && asteroid_hit(asteroids[i], player_get_x(), player_get_y(), player_get_size()))
             {
                 game_active = game_end;
             }

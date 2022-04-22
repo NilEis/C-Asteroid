@@ -16,7 +16,7 @@ struct bullet
     int16_t i;
 };
 
-bullet_t *bullet_new(int16_t x, int16_t y, float a);
+bullet_t *bullet_new(int16_t x, int16_t y, float a, double v);
 
 void bullet_update(bullet_t *b, double time);
 

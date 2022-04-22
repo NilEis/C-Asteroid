@@ -14,7 +14,7 @@ static int draw_hitbox = 0;
 
 static double time = 0;
 
-bullet_t *bullet_new(int16_t x, int16_t y, float a)
+bullet_t *bullet_new(int16_t x, int16_t y, float a, double v)
 {
     double tmp = GetTime();
     if (tmp - time >= 0.1)
@@ -22,8 +22,8 @@ bullet_t *bullet_new(int16_t x, int16_t y, float a)
         bullet_t *b = (bullet_t *)malloc(sizeof(bullet_t));
         b->x = x;
         b->y = y;
-        b->vx = V * cos(a);
-        b->vy = V * sin(a);
+        b->vx = (v + V) * cos(a);
+        b->vy = (v + V) * sin(a);
         b->i = 0;
         time = GetTime();
         return b;
