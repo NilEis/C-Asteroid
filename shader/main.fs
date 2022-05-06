@@ -15,5 +15,9 @@ uniform vec4 colDiffuse;
 void main()
 {
     vec4 texelColor = texture2D(texture0, fragTexCoord);
-    gl_FragColor = texelColor;
+    texelColor += texture2D(texture0+1, fragTexCoord);
+    texelColor += texture2D(texture0-1, fragTexCoord);
+    texelColor += texture2D(texture0, fragTexCoord+1);
+    texelColor += texture2D(texture0, fragTexCoord-1);
+    gl_FragColor = texelColor/5.0;
 }
