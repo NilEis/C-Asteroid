@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "raylib.h"
 #include "video/video_main.h"
 #include "video/shader.h"
@@ -9,12 +10,29 @@
 RenderTexture2D target;
 Shader m_s;
 static void cleanup(void);
-int main(int argc, char const *argv[])
+int main(int argc, char **argv)
 {
 	int cursor = 1;
 	int width = 600;
 	int height = 400;
 	atexit(cleanup);
+	int c = 0;
+	while ((c = getopt(argc, argv, "w:h:i")) != -1)
+	{
+		switch (c)
+		{
+		case 'w':
+			width = atoi(optarg);
+			break;
+		case 'h':
+			height = atoi(optarg);
+			break;
+		case 'i':
+			puts("-w: set the width\n-h: set the height");
+			return 0;
+			break;
+		}
+	}
 	video_init(width, height, "Asteroid");
 	target = LoadRenderTexture(width, height);
 	m_s = LoadShaderFromMemory(basic_shader_vs, basic_shader_fs);

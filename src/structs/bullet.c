@@ -49,7 +49,7 @@ void bullet_draw(bullet_t *b, int width, int height)
     }
 }
 
-int bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size, double time)
+int bullet_tick(bullet_t *b, int width, int height, double time)
 {
     bullet_draw(b, width, height);
     bullet_update(b, time);

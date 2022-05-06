@@ -31,7 +31,7 @@ void asteroid_break(asteroid_t *a, asteroid_t **arr, int index, int size);
 
 int asteroid_add(asteroid_t *a, asteroid_t **arr, int size);
 
-void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, int size, double time);
+void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, double time);
 
 void asteroid_free(asteroid_t *t);
 

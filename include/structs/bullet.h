@@ -22,7 +22,7 @@ void bullet_update(bullet_t *b, double time);
 
 void bullet_draw(bullet_t *b, int width, int height);
 
-int bullet_tick(bullet_t *b, int width, int height, bullet_t **arr, int index, int size, double time);
+int bullet_tick(bullet_t *b, int width, int height, double time);
 
 int bullet_collide(asteroid_t *a, bullet_t *b);
 

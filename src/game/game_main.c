@@ -64,8 +64,6 @@ void game_tick()
 
 static void game_start(void)
 {
-    width = 600;
-    height = 400;
     if (IsKeyPressed(KEY_SPACE))
     {
         game_active = game_run;
@@ -77,8 +75,6 @@ static void game_run(void)
 {
     double frame_time = 1.0 - pow(0.001, GetTime() - last_time);
     monitor = GetCurrentMonitor();
-    width = 600;
-    height = 400;
     if (IsKeyPressed(KEY_H))
     {
         asteroid_switch_hitbox();
@@ -97,7 +93,7 @@ static void game_run(void)
     {
         if (bullets[i] != NULL)
         {
-            if (bullet_tick(bullets[i], width, height, bullets, i, bullets_size, frame_time))
+            if (bullet_tick(bullets[i], width, height, frame_time))
             {
                 bullet_free(bullets[i]);
                 bullets[i] = NULL;
@@ -109,7 +105,7 @@ static void game_run(void)
         int colllide = 0;
         if (asteroids[i] != NULL)
         {
-            asteroid_tick(asteroids[i], width, height, asteroids, i, asteroids_size, frame_time);
+            asteroid_tick(asteroids[i], width, height, asteroids, i, frame_time);
             if (!invincible && asteroid_hit(asteroids[i], player_get_x(), player_get_y(), player_get_size()))
             {
                 game_active = game_end;
@@ -139,10 +135,20 @@ static void game_run(void)
     last_time = GetTime();
 }
 
+void game_set_width(int w)
+{
+    width = w;
+}
+
+void game_set_height(int h)
+{
+    height = h;
+}
+
 static void game_end(void)
 {
     game_init();
-    DrawText("PRESS ESC TO EXIT", 25, height / 2, height / 25, WHITE);
+    DrawText("PRESS ESC TO EXIT", height/25, height / 2, height / 25, WHITE);
 }
 
 static void cleanup(void)

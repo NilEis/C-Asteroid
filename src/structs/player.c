@@ -36,9 +36,9 @@ void player_draw(int width, int height)
     double sin_va = sin(va);
     double n_y = -(cos(va) / (sin_va == 0 ? DBL_MIN : sin_va));
     const double v_l = sqrt(1 + n_y * n_y);
-    const static double p_length = 5.0 * PLAYER_SIZE;
-    const static double p_width = 2.25 * PLAYER_SIZE;
-    const static double p_tail = 2.5 * PLAYER_SIZE;
+    static const double p_length = 5.0 * PLAYER_SIZE;
+    static const double p_width = 2.25 * PLAYER_SIZE;
+    static const double p_tail = 2.5 * PLAYER_SIZE;
     n_x /= v_l;
     n_y /= v_l;
     DrawLine(conv(x + vd_x * p_length, width), conv(y + vd_y * p_length, height), conv(-vd_x * p_tail + x + n_x * p_width, width), conv(-vd_y * p_tail + y + n_y * p_width, height), WHITE);

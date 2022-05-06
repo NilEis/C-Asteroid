@@ -34,6 +34,7 @@ int particle_add(int x, int y, double a, int i)
     }
     particles[j] = p;
     num_particles++;
+    return 0;
 }
 
 void particle_tick(int width, int height, double time)

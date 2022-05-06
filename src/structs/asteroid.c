@@ -108,10 +108,11 @@ int asteroid_add(asteroid_t *a, asteroid_t **arr, int size)
         arr[i] = a;
         return 0;
     }
+    asteroid_free(a);
     return 1;
 }
 
-void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, int size, double time)
+void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, double time)
 {
     asteroid_t *a = (asteroid_t *)t;
     asteroid_draw(a, width, height);

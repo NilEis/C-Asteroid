@@ -18,6 +18,7 @@ list(APPEND LIBS asteroid_audio)
 list(APPEND LIBS asteroid_video)
 list(APPEND LIBS asteroid_structs)
 list(APPEND LIBS asteroid_game)
+list(APPEND LIBS m)
 
 file(READ ${CMAKE_SOURCE_DIR}/shader/main.fs MAIN_SHADER_fs_file)
 string(REPLACE "\n" "\\n\"\\\n\"" MAIN_SHADER_fs "${MAIN_SHADER_fs_file}")
