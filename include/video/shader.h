@@ -18,7 +18,11 @@
 "void main()\n"\
 "{\n"\
 "    vec4 texelColor = texture2D(texture0, fragTexCoord);\n"\
-"    gl_FragColor = texelColor;\n"\
+"    texelColor += texture2D(texture0+1, fragTexCoord);\n"\
+"    texelColor += texture2D(texture0-1, fragTexCoord);\n"\
+"    texelColor += texture2D(texture0, fragTexCoord+1);\n"\
+"    texelColor += texture2D(texture0, fragTexCoord-1);\n"\
+"    gl_FragColor = texelColor/5.0;\n"\
 "}"
 const char basic_shader_fs[] = MAIN_SHADER_fs;
 #undef MAIN_SHADER_fs

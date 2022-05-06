@@ -42,8 +42,16 @@ void game_init()
     }
     for (int i = 0; i < 15; i++)
     {
-        x = rand();
-        y = rand();
+        if (rand() % 2)
+        {
+            x = rand();
+            y = (rand() % 2 == 0) * 1000;
+        }
+        else
+        {
+            x = (rand() % 2 == 0) * 1000;
+            y = rand();
+        }
         asteroids[i] = asteroid_new(x, y, 25);
     }
     game_active = game_start;
@@ -148,7 +156,7 @@ void game_set_height(int h)
 static void game_end(void)
 {
     game_init();
-    DrawText("PRESS ESC TO EXIT", height/25, height / 2, height / 25, WHITE);
+    DrawText("PRESS ESC TO EXIT", height / 25, height / 2, height / 25, WHITE);
 }
 
 static void cleanup(void)
