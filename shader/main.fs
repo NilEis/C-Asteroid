@@ -12,12 +12,11 @@ uniform vec4 colDiffuse;
 
 // NOTE: Add here your custom variables
 
-void main()
-{
+void main() {
     vec4 texelColor = texture2D(texture0, fragTexCoord);
-    texelColor += texture2D(texture0+1, fragTexCoord);
-    texelColor += texture2D(texture0-1, fragTexCoord);
-    texelColor += texture2D(texture0, fragTexCoord+1);
-    texelColor += texture2D(texture0, fragTexCoord-1);
-    gl_FragColor = texelColor/5.0;
+    texelColor += texture2D(texture0, fragTexCoord + vec2(0, 1.0));
+    texelColor += texture2D(texture0, fragTexCoord + vec2(0, -1.0));
+    texelColor += texture2D(texture0, fragTexCoord + vec2(1.0, 0));
+    texelColor += texture2D(texture0, fragTexCoord + vec2(-1.0, 0));
+    gl_FragColor = texelColor / 5.0;
 }
