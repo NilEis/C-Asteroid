@@ -33,6 +33,8 @@ int main(int argc, char **argv)
 			break;
 		}
 	}
+	game_set_width(width);
+	game_set_height(height);
 	video_init(width, height, "Asteroid");
 	target = LoadRenderTexture(width, height);
 	m_s = LoadShaderFromMemory(basic_shader_vs, basic_shader_fs);
