@@ -18,7 +18,7 @@ static uint8_t asteroids_clear = 0;
 static asteroid_t *asteroids[512] = {NULL};
 static const int asteroids_size = sizeof(asteroids) / sizeof(asteroid_t *);
 static uint16_t num_asteroids = 0;
-static bullet_t *bullets[64] = {NULL};
+static bullet_t *bullets[578] = {NULL};
 static const int bullets_size = sizeof(bullets) / sizeof(bullet_t *);
 
 static void (*game_active)(void) = NULL;
@@ -122,13 +122,7 @@ static void game_run(void)
         {
             if (asteroids_clear)
             {
-                asteroid_break(asteroids[i], asteroids, i, asteroids_size);
-                int num_p = rand() % 128;
-                for (int k = 0; k < num_p; k++)
-                {
-                    particle_add(asteroids[i]->x, asteroids[i]->y, rand() % 360, 25 + rand() % 20);
-                }
-                continue;
+                bullet_add(bullet_new(asteroids[i]->x, asteroids[i]->y, 1, 1), bullets, bullets_size);
             }
             asteroid_tick(asteroids[i], width, height, asteroids, i, frame_time);
             if (!invincible && asteroid_hit(asteroids[i], player_get_x(), player_get_y(), player_get_size()))
@@ -150,7 +144,6 @@ static void game_run(void)
                         bullet_free(bullets[j]);
                         bullets[j] = NULL;
                         asteroid_break(asteroids[i], asteroids, i, asteroids_size);
-                        break;
                     }
                 }
             }
