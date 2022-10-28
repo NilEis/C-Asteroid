@@ -9,9 +9,20 @@ static uint16_t c_id = 0;
 
 static int draw_hitbox = 0;
 
+static uint16_t num_asteroids = 0;
+
+uint16_t asteroid_get_num(void)
+{
+    return num_asteroids;
+}
+
 asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size)
 {
     asteroid_t *t = (asteroid_t *)malloc(sizeof(asteroid_t));
+    if (t == NULL)
+    {
+        return NULL;
+    }
     t->x = x % 1000;
     t->y = y % 1000;
     int va = rand() % 360;
@@ -33,6 +44,8 @@ asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size)
         a += 24;
     }
     t->r = max_r;
+    t->dead = 0;
+    num_asteroids++;
     return t;
 }
 
@@ -122,6 +135,7 @@ void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, 
 
 inline void asteroid_free(asteroid_t *t)
 {
+    num_asteroids--;
     free(t);
 }
 

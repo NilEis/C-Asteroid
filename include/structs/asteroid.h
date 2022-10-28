@@ -15,7 +15,10 @@ struct asteroid
     uint16_t id;
     Vector2 verticies[15];
     float r;
+    uint8_t dead;
 };
+
+uint16_t asteroid_get_num(void);
 
 asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size);
 

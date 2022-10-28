@@ -1,6 +1,7 @@
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include "game/game_main.h"
 #include "video/video_main.h"
 #include "structs/asteroid.h"
@@ -13,8 +14,10 @@ static int monitor = 0;
 static int width = 0;
 static int height = 0;
 static uint8_t invincible = 0;
+static uint8_t asteroids_clear = 0;
 static asteroid_t *asteroids[512] = {NULL};
 static const int asteroids_size = sizeof(asteroids) / sizeof(asteroid_t *);
+static uint16_t num_asteroids = 0;
 static bullet_t *bullets[64] = {NULL};
 static const int bullets_size = sizeof(bullets) / sizeof(bullet_t *);
 
@@ -93,6 +96,10 @@ static void game_run(void)
     {
         invincible = !invincible;
     }
+    if (IsKeyPressed(KEY_C))
+    {
+        asteroids_clear = !asteroids_clear;
+    }
     if (player_tick(width, height, frame_time) == 1)
     {
         bullet_add(bullet_new(player_get_x(), player_get_y(), player_get_a(), player_get_v()), bullets, bullets_size);
@@ -113,6 +120,16 @@ static void game_run(void)
         int colllide = 0;
         if (asteroids[i] != NULL)
         {
+            if (asteroids_clear)
+            {
+                asteroid_break(asteroids[i], asteroids, i, asteroids_size);
+                int num_p = rand() % 128;
+                for (int k = 0; k < num_p; k++)
+                {
+                    particle_add(asteroids[i]->x, asteroids[i]->y, rand() % 360, 25 + rand() % 20);
+                }
+                continue;
+            }
             asteroid_tick(asteroids[i], width, height, asteroids, i, frame_time);
             if (!invincible && asteroid_hit(asteroids[i], player_get_x(), player_get_y(), player_get_size()))
             {
@@ -138,6 +155,10 @@ static void game_run(void)
                 }
             }
         }
+    }
+    if (asteroid_get_num() == 0)
+    {
+        game_active = game_end;
     }
     particle_tick(width, height, frame_time);
     last_time = GetTime();

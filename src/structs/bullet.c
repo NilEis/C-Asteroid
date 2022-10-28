@@ -61,6 +61,10 @@ int bullet_collide(asteroid_t *a, bullet_t *b)
     double distX = a->x - b->x;
     double distY = a->y - b->y;
     double distR = a->r + R;
+    if(a->dead)
+    {
+        return 1;
+    }
     return (distX * distX + distY * distY) <= (distR * distR);
 }
 

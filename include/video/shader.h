@@ -15,14 +15,13 @@
 "\n"\
 "// NOTE: Add here your custom variables\n"\
 "\n"\
-"void main()\n"\
-"{\n"\
+"void main() {\n"\
 "    vec4 texelColor = texture2D(texture0, fragTexCoord);\n"\
-"    texelColor += texture2D(texture0+1, fragTexCoord);\n"\
-"    texelColor += texture2D(texture0-1, fragTexCoord);\n"\
-"    texelColor += texture2D(texture0, fragTexCoord+1);\n"\
-"    texelColor += texture2D(texture0, fragTexCoord-1);\n"\
-"    gl_FragColor = texelColor/5.0;\n"\
+"    texelColor += texture2D(texture0, fragTexCoord + vec2(0, 1.0));\n"\
+"    texelColor += texture2D(texture0, fragTexCoord + vec2(0, -1.0));\n"\
+"    texelColor += texture2D(texture0, fragTexCoord + vec2(1.0, 0));\n"\
+"    texelColor += texture2D(texture0, fragTexCoord + vec2(-1.0, 0));\n"\
+"    gl_FragColor = texelColor / 5.0;\n"\
 "}"
 const char basic_shader_fs[] = MAIN_SHADER_fs;
 #undef MAIN_SHADER_fs

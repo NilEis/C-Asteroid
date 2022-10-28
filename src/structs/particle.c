@@ -6,7 +6,7 @@
 
 #define conv(x, s) (((double)(x) / 1000.0) * ((double)s))
 
-static particle_t *particles[2064];
+static particle_t *particles[8192];
 static const int particles_size = sizeof(particles) / sizeof(particle_t *);
 
 static int num_particles = 0;
