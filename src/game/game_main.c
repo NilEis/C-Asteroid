@@ -17,9 +17,10 @@ static uint8_t invincible = 0;
 static uint8_t asteroids_clear = 0;
 static asteroid_t *asteroids[512] = {NULL};
 static const int asteroids_size = sizeof(asteroids) / sizeof(asteroid_t *);
-static uint16_t num_asteroids = 0;
 static bullet_t *bullets[578] = {NULL};
 static const int bullets_size = sizeof(bullets) / sizeof(bullet_t *);
+uint16_t end_timer = 0;
+uint8_t game_did_end = 0;
 
 static void (*game_active)(void) = NULL;
 
@@ -118,16 +119,21 @@ static void game_run(void)
     for (int i = 0; i < asteroids_size; i++)
     {
         int colllide = 0;
+        if (asteroids_clear && asteroids[i] != NULL)
+        {
+            int num_p = rand() % 128;
+            for (int k = 0; k < num_p; k++)
+            {
+                particle_add(asteroids[i]->x, asteroids[i]->y, rand() % 360, 25 + rand() % 20);
+            }
+            asteroid_break(asteroids[i], asteroids, i, asteroids_size);
+        }
         if (asteroids[i] != NULL)
         {
-            if (asteroids_clear)
-            {
-                bullet_add(bullet_new(asteroids[i]->x, asteroids[i]->y, 1, 1), bullets, bullets_size);
-            }
             asteroid_tick(asteroids[i], width, height, asteroids, i, frame_time);
             if (!invincible && asteroid_hit(asteroids[i], player_get_x(), player_get_y(), player_get_size()))
             {
-                game_active = game_end;
+                game_did_end = 1;
             }
             for (int j = 0; j < bullets_size && colllide == 0; j++)
             {
@@ -151,9 +157,17 @@ static void game_run(void)
     }
     if (asteroid_get_num() == 0)
     {
-        game_active = game_end;
+        game_did_end = 1;
     }
     particle_tick(width, height, frame_time);
+    if (game_did_end)
+    {
+        end_timer += frame_time*1000;
+        if (end_timer >= 5000)
+        {
+            game_active = game_end;
+        }
+    }
     last_time = GetTime();
 }
 
@@ -169,6 +183,10 @@ void game_set_height(int h)
 
 static void game_end(void)
 {
+    invincible = 0;
+    asteroids_clear = 0;
+    game_did_end = 0;
+    end_timer = 0;
     game_init();
     DrawText("PRESS ESC TO EXIT", height / 25, height / 2, height / 25, WHITE);
 }

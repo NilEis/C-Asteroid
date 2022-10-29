@@ -8,6 +8,7 @@
  */
 #ifndef PARTICLE_H
 #define PARTICLE_H
+#include "raylib.h"
 
 typedef struct particle particle_t; ///< typedef
 
@@ -22,6 +23,7 @@ struct particle
     double vx; ///< x velocity
     double vy; ///< y velocity
     double i; ///< lifetime
+    Color c; ///< color
 };
 
 /**

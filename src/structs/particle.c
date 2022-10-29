@@ -31,6 +31,7 @@ int particle_add(int x, int y, double a, int i)
     p->vx = cos(a) * 70.0;
     p->vy = sin(a) * 70.0;
     p->i = i;
+    p->c = RAYWHITE;
     int j = 0;
     while (particles[j] != NULL && j < particles_size)
     {
@@ -74,7 +75,7 @@ int particle_update(particle_t *p, double time)
 
 void particle_draw(particle_t *p, int width, int height)
 {
-    DrawPixel(conv(p->x, width), conv(p->y, height), RAYWHITE);
+    DrawPixel(conv(p->x, width), conv(p->y, height), p->c);
     // DrawCircle(conv(p->x, width), conv(p->y, height), 2, RAYWHITE);
 }
 
