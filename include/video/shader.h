@@ -1,3 +1,11 @@
+/**
+ * @file shader.h
+ * @author NilEis
+ * @brief the header includes several shader files as strings
+ * @date 2022-10-29
+ * 
+ * @copyright Copyright (c) 2022
+ */
 #ifndef SHADER_H
 #define SHADER_H
 
@@ -24,7 +32,7 @@
 "    gl_FragColor = texelColor / 5.0;\n"\
 "    gl_FragColor = texture2D(texture0, fragTexCoord);\n"\
 "}"
-const char basic_shader_fs[] = MAIN_SHADER_fs;
+const char basic_shader_fs[] = MAIN_SHADER_fs; ///< the basic fragment shader
 #undef MAIN_SHADER_fs
 
 #define MAIN_SHADER_vs "#version 100\n"\
@@ -53,7 +61,7 @@ const char basic_shader_fs[] = MAIN_SHADER_fs;
 "    // Calculate final vertex position\n"\
 "    gl_Position = mvp*vec4(vertexPosition, 1.0);\n"\
 "}"
-const char basic_shader_vs[] = MAIN_SHADER_vs;
+const char basic_shader_vs[] = MAIN_SHADER_vs; ///< the basic vertex shader
 #undef MAIN_SHADER_vs
 
 #endif // SHADER_H

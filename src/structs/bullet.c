@@ -20,6 +20,10 @@ bullet_t *bullet_new(int16_t x, int16_t y, float a, double v)
     if (tmp - time >= 0.1)
     {
         bullet_t *b = (bullet_t *)malloc(sizeof(bullet_t));
+        if(b == NULL)
+        {
+            return NULL;
+        }
         b->x = x;
         b->y = y;
         b->vx = (v + V) * cos(a);
@@ -61,10 +65,6 @@ int bullet_collide(asteroid_t *a, bullet_t *b)
     double distX = a->x - b->x;
     double distY = a->y - b->y;
     double distR = a->r + R;
-    if(a->dead)
-    {
-        return 1;
-    }
     return (distX * distX + distY * distY) <= (distR * distR);
 }
 

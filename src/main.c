@@ -10,13 +10,24 @@
 RenderTexture2D target;
 Shader m_s;
 static void cleanup(void);
+
 int main(int argc, char **argv)
 {
+	/**
+	 * @brief Deactivates the cursor if 0
+	 */
 	int cursor = 1;
+	/**
+	 * @brief The width of the window
+	 */
 	int width = 600;
+	/**
+	 * @brief The height of the window 
+	 */
 	int height = 400;
 	atexit(cleanup);
 	int c = 0;
+	// Begin the parsing of cmd-line args
 	while ((c = getopt(argc, argv, "w:h:i")) != -1)
 	{
 		switch (c)

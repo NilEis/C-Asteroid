@@ -44,14 +44,8 @@ asteroid_t *asteroid_new(uint16_t x, uint16_t y, uint8_t size)
         a += 24;
     }
     t->r = max_r;
-    t->dead = 0;
     num_asteroids++;
     return t;
-}
-
-int asteroid_compare(void *a1, void *a2)
-{
-    return (((asteroid_t *)a1)->id < ((asteroid_t *)a2)->id) * (-1) + (((asteroid_t *)a1)->id > ((asteroid_t *)a2)->id) * 1;
 }
 
 void asteroid_draw(asteroid_t *t, int width, int height)

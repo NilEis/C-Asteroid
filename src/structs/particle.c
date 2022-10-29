@@ -22,6 +22,10 @@ void particle_init()
 int particle_add(int x, int y, double a, int i)
 {
     particle_t *p = (particle_t *)malloc(sizeof(particle_t));
+    if (p == NULL)
+    {
+        return -1;
+    }
     p->x = x;
     p->y = y;
     p->vx = cos(a) * 70.0;
