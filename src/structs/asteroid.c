@@ -129,6 +129,10 @@ void asteroid_tick(void *t, int width, int height, asteroid_t **arr, int index, 
 
 inline void asteroid_free(asteroid_t *t)
 {
+    if (t == NULL)
+    {
+        return;
+    }
     num_asteroids--;
     free(t);
 }

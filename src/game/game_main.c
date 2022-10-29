@@ -162,7 +162,7 @@ static void game_run(void)
     particle_tick(width, height, frame_time);
     if (game_did_end)
     {
-        end_timer += frame_time*1000;
+        end_timer += frame_time * 1000;
         if (end_timer >= 5000)
         {
             game_active = game_end;
@@ -195,6 +195,10 @@ static void cleanup(void)
 {
     for (int i = 0; i < asteroids_size; i++)
     {
+        if (asteroids[i] == NULL)
+        {
+            continue;
+        }
         asteroid_free(asteroids[i]);
     }
 }
